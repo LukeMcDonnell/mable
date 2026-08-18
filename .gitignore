@@ -10,8 +10,6 @@
 /.bundle
 /vendor/bundle
 
-# Ignore local environment overrides (see .env.example).
-/.env
 
 # Ignore all logfiles and tempfiles.
 /log/*
@@ -31,3 +29,6 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Local Claude Code settings.
+/.claude/

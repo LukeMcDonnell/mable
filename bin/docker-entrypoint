@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e
+
+# The project is bind-mounted at /app, so it arrives owned by whoever checked it
+# out on the host. Adopt that uid/gid before running the command, and anything
+# the container writes (gems, generated code, the SQLite db) comes back out
+# owned by them rather than by root.
+if [ "$(id -u)" = "0" ]; then
+  exec setpriv \
+    --reuid "$(stat -c %u /app)" \
+    --regid "$(stat -c %g /app)" \
+    --clear-groups \
+    "$@"
+fi
+
+exec "$@"

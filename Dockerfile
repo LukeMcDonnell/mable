@@ -8,4 +8,7 @@ ENV BUNDLE_PATH=/app/vendor/bundle \
 
 WORKDIR /app
 
+COPY bin/docker-entrypoint /usr/local/bin/
+ENTRYPOINT ["docker-entrypoint"]
+
 CMD ["bash"]

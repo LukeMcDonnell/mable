@@ -1,9 +1,8 @@
 services:
   app:
     build: .
-    # Run as the host user so files written by the container (generated code,
-    # gems, the SQLite db) stay owned by you rather than root.
-    user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
+    # No `user:` needed — bin/docker-entrypoint adopts the ownership of the
+    # bind-mounted project, so the container writes files as the host user.
     volumes:
       - .:/app
     tty: true
