@@ -1,6 +1,7 @@
 {
   "test": "docker compose run --rm app bundle exec rspec",
-  "test:e2e": "docker compose run --rm app bundle exec rspec spec/e2e/processing_a_days_transfers_spec.rb",
+  "test:e2e": "docker compose run --rm app bundle exec rspec spec/e2e/*",
+  "test:models": "docker compose run --rm app bundle exec rspec spec/models/*",
   "shell": "docker compose run --rm app bash",
   "migrate": "docker compose run --rm app bin/rails db:migrate",
   "db:prepare": "docker compose run --rm app bin/rails db:prepare",
