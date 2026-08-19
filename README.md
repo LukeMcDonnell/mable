@@ -1,24 +1,30 @@
-# README
+# Mable Back End Code Test
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Running it
 
-Things you may want to cover:
+The whole toolchain is in Docker, so no Ruby install is needed.
 
-* Ruby version
+```bash
+docker compose build
+docker compose run --rm app bundle install
+docker compose run --rm app bin/rails db:prepare
+docker compose run --rm app bin/rails "accounts:load[docs/mable_account_balances.csv]"
+docker compose run --rm app bin/rails "transfers:process[docs/mable_transactions.csv]"
+```
 
-* System dependencies
+## Tests
 
-* Configuration
+```bash
+docker compose run --rm app bundle exec rspec
+```
 
-* Database creation
+Unit specs per class, plus one e2e spec (happy path) that runs both rake tasks over the supplied CSVs and asserts the closing balances.
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Assumptions
+- Transaction amount should always be a positive, non-zero number
+- The source account must have a balance greater than or equal to the transaction amount
+- Source and destination account number should not be the same
+- Both source and destination account must exist
+- The balance importer should be idempotent. If the account number already exists, update the balance with the value from the CSV
+- Transactions should be parsed and applied in the order they appear in the CSV
+- Output will be in the form of a simple report outlining the applied and rejected transactions and the closing balances
